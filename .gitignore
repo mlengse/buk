@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+package-lock.json
+
+#NAV=ul.nav.navbar-nav
+#HREF=ul.nav.navbar-nav li > a[href]
+#HOME='#content .home_hd'
+#TEXT='#content > div > div.col-sm-6.text-right'
