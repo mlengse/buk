@@ -65,3 +65,4 @@ package-lock.json
 #HREF=ul.nav.navbar-nav li > a[href]
 #HOME='#content .home_hd'
 #TEXT='#content > div > div.col-sm-6.text-right'
+#CRON=5 */2 * * *
