@@ -18,6 +18,8 @@
   "homepage": "https://github.com/mlengse/buk#readme",
   "dependencies": {
     "dotenv": "^7.0.0",
-    "nightmare": "^3.0.1"
+    "moment": "^2.24.0",
+    "nightmare": "^3.0.1",
+    "node-cron": "^2.0.3"
   }
 }
