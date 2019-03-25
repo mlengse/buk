@@ -32,6 +32,8 @@ module.exports = async () => {
     }, process.env.HREF);
 
     for (let link of links) {
+      let tag = link.split('/').slice(-1)[0]
+
       await buk.goto(link);
 
       let content = await buk.exists(process.env.HOME);
@@ -58,7 +60,7 @@ module.exports = async () => {
 
         console.log(`${part} dari ${total} hal ${hal}`);
 
-        await scrapeProducts(buk, prodLength);
+        await scrapeProducts(buk, prodLength, tag);
 
         while (Number(part) < Number(total)) {
           hal++;
@@ -91,7 +93,7 @@ module.exports = async () => {
 
           console.log(`${part} dari ${total} hal ${hal}`);
 
-          await scrapeProducts(buk, prodLength);
+          await scrapeProducts(buk, prodLength, tag);
         }
       }
     }

@@ -1,3 +1,42 @@
+const Fs = require('fs')
+const Path = require('path')
+const Axios = require('axios')
+const { upsert } = require('./db')
+async function downloadImage(url, path) {
+
+  let lanjut
+
+  if(Fs.existsSync(path)){
+    if (Fs.statSync(path).size < 1) {
+      lanjut = true
+    }
+  } else {
+    lanjut = true
+  }
+
+  if(lanjut){
+    const writer = Fs.createWriteStream(path);
+
+    const response = await Axios({
+      url,
+      method: "GET",
+      responseType: "stream"
+    });
+
+    response.data.pipe(writer);
+
+    return new Promise((resolve, reject) => {
+      writer.on("finish", resolve);
+      writer.on("error", reject);
+    });
+
+  }
+
+  return
+
+}
+
+
 const getProductEval = () => {
   let links = document.querySelectorAll('.caption > h5 > a[href]')
   let products = []
@@ -110,23 +149,29 @@ const getDescEval = () => {
 
   panel.parentNode.removeChild(panel)
 
-  desc = getDesc(desc, "#tab-description p");
-  desc = getDesc(desc, "#tab-description li");
-  desc = getDesc(desc, "#tab-description div");
+  //desc = getDesc(desc, "#tab-description p");
+  //desc = getDesc(desc, "#tab-description li");
+  //desc = getDesc(desc, "#tab-description div");
 
-  if (desc.berat && typeof desc.berat === 'String') {
-    desc.berat = [].push(desc.berat)
-  }
+  //if(desc === ''){
+    desc = getDesc(desc, "#tab-description");
+  //}
 
-  if (Array.isArray(desc.berat)) {
-    desc.berat = Array.from(new Set(desc.berat))
-  }
 
   if (Array.isArray(desc.harga)) {
     desc.harga = Array.from(new Set(desc.harga))
   }
 
-  if (['Stock Habis', 'PRE-ORDER'].filter(e => JSON.stringify(desc).includes(e)).length === 0) {
+  let imgs = document.querySelectorAll('.col-sm-8 img')
+  let srcs = []
+  for(let img of imgs){
+    let src = img.getAttribute('src')
+    srcs[srcs.length] = src
+  }
+
+  desc.img = srcs
+
+  if (['Stock Habis', 'PRE-ORDER', 'eks', 'paket'].filter(e => JSON.stringify(desc).includes(e)).length === 0) {
     return desc
   }
 
@@ -134,7 +179,7 @@ const getDescEval = () => {
 
 }
 
-module.exports = async (buk, prodLength) => {
+module.exports = async (buk, prodLength, tag) => {
   try {
     let products = await buk.evaluate(getProductEval)
 
@@ -158,7 +203,37 @@ module.exports = async (buk, prodLength) => {
       }, descEval)
 
       if(desc.harga.length){
-        console.log(desc)
+        desc.paths = []
+        for(let img of desc.img){
+          let file = img.split("/");
+          let filename = file[file.length - 1];
+        
+          filename = filename.split('-')
+          if(filename[filename.length-1].includes('x')){
+            let fn = filename.pop()
+            let extArr = fn.split('.')
+            let ext = extArr.pop()
+            fn = ["500x747", ext].join('.');
+            filename.push(fn);
+          }
+          filename = filename.join('-');
+          file.pop()
+          file.push(filename)
+
+          img = file.join('/')
+
+          let path = Path.join(__dirname, "pics", filename);
+          desc.paths.push(path)
+          await downloadImage(img, path)  
+        }
+
+        let key = desc.link.split('/')
+        desc._key = key[key.length-1].split('/').join('-').trim()
+        desc.tag = tag
+
+        let { NEW } = await upsert('idbuku', desc)
+
+        console.log(NEW.deskripsi)
       }
 
     }

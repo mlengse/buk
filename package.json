@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/mlengse/buk#readme",
   "dependencies": {
+    "arangojs": "^6.10.0",
+    "axios": "^0.18.0",
     "dotenv": "^7.0.0",
     "moment": "^2.24.0",
     "nightmare": "^3.0.1",

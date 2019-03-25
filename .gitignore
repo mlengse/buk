@@ -60,7 +60,7 @@ typings/
 # next.js build output
 .next
 package-lock.json
-
+pics/
 #NAV=ul.nav.navbar-nav
 #HREF=ul.nav.navbar-nav li > a[href]
 #HOME='#content .home_hd'
