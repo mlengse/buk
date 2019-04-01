@@ -3,7 +3,7 @@ const uploader = require('./uploader')
 
 ;(async () => {
   try{
-    await navigator()
+    //await navigator()
     await uploader()
 
   }catch(err){
