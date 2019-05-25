@@ -61,6 +61,7 @@ typings/
 .next
 package-lock.json
 pics/
+images
 #NAV=ul.nav.navbar-nav
 #HREF=ul.nav.navbar-nav li > a[href]
 #HOME='#content .home_hd'

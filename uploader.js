@@ -44,6 +44,7 @@ module.exports = async () => {
           switch (d.tag.toLowerCase()) {
             case "moral":
             case "petualangan":
+            case "roman":
             case "misteri":
             case "keluarga":
               d.tag = "novel";
@@ -60,6 +61,10 @@ module.exports = async () => {
             case "cerita":
             case "al-quran":
               d.tag = "agama";
+              break;
+            case "motivasi":
+            case "pribadi":
+              d.tag = "pengembangan diri";
               break;
             default:
               break;
@@ -199,7 +204,6 @@ module.exports = async () => {
 
       }
     }
-    await upl.end()
   } catch (err) {
     console.log(err);
   }
