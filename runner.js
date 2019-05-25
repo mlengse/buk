@@ -1,9 +1,14 @@
 const navigator = require('./navigator')
-const uploader = require('./uploader')
+//const uploader = require('./uploader')
+const { aql, query } = require('./db')
 
 ;(async () => {
   try{
-    await navigator()
+    
+    let books = await query(aql`FOR s IN shiramedia RETURN s`)
+    //console.log(books)
+    await navigator(books)
+    //console.log(books)
     //await uploader()
 
   }catch(err){

@@ -6,9 +6,11 @@ module.exports = async (url, dir) => {
 
   let filename = url.split('/').pop()
 
-  let dirPath = Path.join(__dirname, dir)
+  let dirname = Path.join('//192.168.1.88', 'share', 'anjang')
 
-  let path = Path.join(__dirname, dir, filename)
+  let dirPath = Path.join(dirname, dir)
+
+  let path = Path.join(dirname, dir, filename)
 
   let lanjut
 
